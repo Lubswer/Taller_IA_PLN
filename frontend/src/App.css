@@ -535,3 +535,125 @@ body {
   .header { padding: 22px 20px; }
   .header-title { font-size: 1.35rem; }
 }
+
+/* ── Vista de comparación Original → Resultado ──────────── */
+
+/* Descripción de la operación */
+.op-desc {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  border-left: 3px solid #ccc;
+  padding: 6px 10px;
+  margin-bottom: 12px;
+  background: rgba(0,0,0,.03);
+  border-radius: 0 6px 6px 0;
+  line-height: 1.5;
+}
+
+/* Leyenda */
+.legend-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.73rem;
+  color: var(--text-soft);
+}
+.leg-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.leg-dot.same { background: #bdc3c7; }
+.leg-dot.diff { background: #e74c3c; }
+
+/* Cabecera de columnas */
+.compare-header {
+  display: grid;
+  grid-template-columns: 26px 1fr 18px 1fr auto;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #aab7c4;
+  padding: 0 6px 6px;
+  border-bottom: 1px solid rgba(93,173,226,.15);
+  margin-bottom: 6px;
+}
+.col-arrow { text-align: center; }
+
+
+/* Filas de la tabla */
+.token-table {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 12px;
+}
+
+.token-row {
+  display: grid;
+  grid-template-columns: 26px 1fr 18px 1fr auto;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  animation: chipIn 0.2s ease both;
+}
+.row-same {
+  background: transparent;
+}
+.row-diff {
+  background: rgba(231,76,60,.05);
+  border: 1px solid rgba(231,76,60,.15);
+}
+
+.col-idx {
+  font-size: 0.65rem;
+  color: #bdc3c7;
+  text-align: right;
+}
+.col-orig-val {
+  color: var(--text-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.col-arr {
+  text-align: center;
+  color: #bdc3c7;
+  font-size: 0.75rem;
+}
+.col-proc-val {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.changed-badge {
+  font-size: 0.62rem;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Footer de resultado */
+.result-footer {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  padding-top: 8px;
+  border-top: 1px solid rgba(93,173,226,.15);
+}
+.diff-count {
+  margin-left: 4px;
+  font-weight: 600;
+}
+

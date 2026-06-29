@@ -107,12 +107,13 @@ app = Flask(__name__)
 CORS(app)   # Permite peticiones desde React (localhost:5173)
 
 
-def _ok(resultado: list, entrada: str):
+def _ok(resultado: list, entrada: str, originales: list = None):
     return jsonify({
-        "ok":       True,
-        "entrada":  entrada,
-        "resultado": resultado,
-        "total":    len(resultado),
+        "ok":         True,
+        "entrada":    entrada,
+        "resultado":  resultado,
+        "originales": originales or [],   # tokens antes de procesar (para comparar)
+        "total":      len(resultado),
     })
 
 
@@ -138,29 +139,38 @@ def tokenizar():
     if not texto:
         return _error("El campo 'texto' está vacío.")
     try:
-        return _ok(fn_tokenizar(texto, idioma), texto)
+        resultado  = fn_tokenizar(texto, idioma)
+        # originales = palabras sin tokenizar (para mostrar lo que se añade)
+        # usamos el mismo tokenizador pero sin filtro para ver el antes/después
+        originales = texto.split()  # texto crudo separado por espacios
+        return _ok(resultado, texto, originales)
     except Exception as e:
         return _error(str(e))
 
 
 @app.route("/api/normalizar", methods=["POST"])
 def normalizar():
-    texto, _, _ = _body()
+    texto, idioma, _ = _body()
     if not texto:
         return _error("El campo 'texto' está vacío.")
     try:
-        return _ok(fn_normalizar(texto), texto)
+        originales = fn_tokenizar(texto, idioma)   # tokens sin procesar
+        resultado  = fn_normalizar(texto)
+        return _ok(resultado, texto, originales)
     except Exception as e:
         return _error(str(e))
 
 
 @app.route("/api/lematizar", methods=["POST"])
 def lematizar():
-    texto, _, lang = _body()
+    texto, idioma, lang = _body()
     if not texto:
         return _error("El campo 'texto' está vacío.")
     try:
-        return _ok(fn_lematizar(texto, lang), texto)
+        originales = [t for t in fn_tokenizar(texto, idioma)
+                      if t not in string.punctuation]
+        resultado  = fn_lematizar(texto, lang)
+        return _ok(resultado, texto, originales)
     except Exception as e:
         return _error(str(e))
 
@@ -171,7 +181,10 @@ def stemming():
     if not texto:
         return _error("El campo 'texto' está vacío.")
     try:
-        return _ok(fn_stemming(texto, idioma), texto)
+        originales = [t for t in fn_tokenizar(texto, idioma)
+                      if t not in string.punctuation]
+        resultado  = fn_stemming(texto, idioma)
+        return _ok(resultado, texto, originales)
     except Exception as e:
         return _error(str(e))
 
